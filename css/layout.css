@@ -1,0 +1,452 @@
+/* ============================================================
+   EYEAHEAD — layout.css
+   App shell grid, sidebar, header, section, panel layouts.
+   Mobile-first. Min-width 375px. Every layout works at 375px.
+   ============================================================ */
+
+
+/* ── App Shell ───────────────────────────────────────────── */
+/*
+   Mobile  (<768px): sidebar is a fixed overlay (off-screen left)
+   Desktop (≥768px): sidebar is fixed, app-shell has left margin
+*/
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* margin-left applied at ≥768px below */
+}
+
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100%;
+  height: 100dvh; /* dynamic viewport on mobile */
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-sidebar);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Hidden off-screen on mobile by default */
+  transform: translateX(-100%);
+  transition: transform var(--transition-base);
+  will-change: transform;
+}
+
+.sidebar.is-open {
+  transform: translateX(0);
+}
+
+/* Desktop: always visible */
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0);
+    transition: none;
+  }
+
+  .app-shell {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* Sidebar Logo Block */
+.sidebar__logo {
+  flex-shrink: 0;
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo-mark__glyph {
+  flex-shrink: 0;
+}
+
+.logo-mark__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-md);
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.logo-sub {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  margin-top: var(--space-1);
+  padding-left: 30px; /* aligns with logo name text */
+}
+
+/* Sidebar Nav */
+.sidebar__nav {
+  flex: 1;
+  padding: var(--space-3) 0;
+  overflow-y: auto;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  position: relative;
+}
+
+/* Nav Links */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+  min-height: 44px; /* touch target */
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Active state — cyan left border accent */
+.nav-item--active .nav-link {
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.nav-item--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background-color: var(--color-cyan);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.nav-link__icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.nav-link__label {
+  flex: 1;
+  line-height: 1;
+}
+
+/* Sidebar Footer */
+.sidebar__footer {
+  flex-shrink: 0;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.nav-link--footer {
+  color: var(--color-text-secondary);
+}
+
+.nav-link--footer:hover {
+  color: var(--color-text);
+}
+
+/* Sidebar Overlay (mobile darkens content behind sidebar) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: calc(var(--z-sidebar) - 1);
+  animation: fade-in 0.2s ease forwards;
+}
+
+.sidebar-overlay.is-visible {
+  display: block;
+}
+
+/* No overlay needed on desktop */
+@media (min-width: 768px) {
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+
+
+/* ── Header ──────────────────────────────────────────────── */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
+  height: var(--header-height);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+@media (min-width: 600px) {
+  .app-header {
+    padding: 0 var(--space-6);
+  }
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+@media (min-width: 600px) {
+  .header__right {
+    gap: var(--space-4);
+  }
+}
+
+/* Mobile logo (shown only on mobile, since sidebar is hidden) */
+.header__logo-mobile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header__logo-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+}
+
+/* Hide mobile logo when sidebar is visible (desktop) */
+@media (min-width: 768px) {
+  .header__logo-mobile {
+    display: none;
+  }
+}
+
+/* Hamburger Toggle */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: var(--space-2);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-text-secondary);
+  border-radius: 1px;
+  transition: background-color var(--transition-fast), transform var(--transition-base), opacity var(--transition-base);
+  transform-origin: center;
+}
+
+.menu-toggle:hover span {
+  background-color: var(--color-text);
+}
+
+/* Hide hamburger on desktop */
+@media (min-width: 768px) {
+  .menu-toggle {
+    display: none;
+  }
+}
+
+
+/* ── Main Content ─────────────────────────────────────────── */
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  min-width: 0;
+}
+
+@media (min-width: 600px) {
+  .app-main {
+    padding: var(--space-6);
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-main {
+    padding: var(--space-8);
+    gap: var(--space-8);
+  }
+}
+
+
+/* ── Sections ─────────────────────────────────────────────── */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* Stats Row — 2-up mobile, 4-up desktop */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .stats-row {
+    gap: var(--space-4);
+  }
+}
+
+@media (min-width: 900px) {
+  .stats-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Split section — alert feed (fluid) + risk panel (fixed width) */
+.section--split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .section--split {
+    grid-template-columns: 1fr 300px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .section--split {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+
+/* ── Panels ───────────────────────────────────────────────── */
+
+.panel {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Panel with no fixed min-height (used by narrow risk panel) */
+.panel--narrow {
+  /* inherits panel — no additions needed */
+}
+
+/* Panel that spans full content width */
+.panel--full {
+  width: 100%;
+}
+
+/* Panel Header */
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+  min-height: 52px;
+}
+
+.panel__title {
+  color: var(--color-text-secondary);
+}
+
+.panel__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.panel__header-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.panel__count {
+  color: var(--color-text-secondary);
+}
+
+/* Panel Body */
+.panel__body {
+  flex: 1;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 240px;
+}
+
+/* Body variant: centered content (used by risk panel) */
+.panel__body--center {
+  align-items: center;
+  justify-content: center;
+}
+
+/* Body variant: flush to edges (used by tables) */
+.panel__body--flush {
+  padding: 0;
+  min-height: 280px;
+}
