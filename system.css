@@ -1,0 +1,301 @@
+/* ============================================================
+   EYEAHEAD — system.css
+   Single source of truth for all design tokens.
+   Colors, typography, spacing, animation keyframes.
+   Load this before layout.css and components.css.
+   ============================================================ */
+
+
+/* ── Reset ──────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.6;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ── Design Tokens ───────────────────────────────────────── */
+
+:root {
+
+  /* ── Colors: Backgrounds ── */
+  --color-bg:             #080808;
+  --color-surface:        #0F0F0F;
+  --color-card:           #141414;
+  --color-border:         #1C1C1C;
+  --color-border-active:  #252525;
+
+  /* ── Colors: Brand ── */
+  --color-cyan:           #00DEFF;
+  --color-cyan-15:        rgba(0, 222, 255, 0.15);
+  --color-cyan-08:        rgba(0, 222, 255, 0.08);
+  --color-cyan-glow:      0 0 24px rgba(0, 222, 255, 0.25);
+
+  /* ── Colors: Semantic / Risk ── */
+  --color-critical:       #FF2D2D;
+  --color-warning:        #FF9500;
+  --color-safe:           #00CF8E;
+
+  --color-critical-15:    rgba(255, 45, 45, 0.15);
+  --color-critical-08:    rgba(255, 45, 45, 0.08);
+  --color-warning-15:     rgba(255, 149, 0, 0.15);
+  --color-warning-08:     rgba(255, 149, 0, 0.08);
+  --color-safe-15:        rgba(0, 207, 142, 0.15);
+  --color-safe-08:        rgba(0, 207, 142, 0.08);
+
+  /* ── Colors: Text ── */
+  --color-text:           #FFFFFF;
+  --color-text-secondary: #5C5C5C;
+  --color-text-dim:       #2E2E2E;
+
+  /* ── Typography: Families ── */
+  --font-display:  'Space Grotesk', -apple-system, sans-serif;
+  --font-body:     'Inter', -apple-system, sans-serif;
+  --font-mono:     'Space Mono', 'Courier New', monospace;
+
+  /* ── Typography: Scale ── */
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-md:   18px;
+  --text-lg:   24px;
+  --text-xl:   32px;
+  --text-2xl:  48px;
+
+  /* ── Spacing: 4px base ── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-24:  96px;
+
+  /* ── Border Radii ── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
+
+  /* ── Transitions ── */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* ── Shadows ── */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  /* ── Z-Index ── */
+  --z-base:    1;
+  --z-raised:  10;
+  --z-header:  90;
+  --z-sidebar: 100;
+  --z-overlay: 200;
+  --z-toast:   300;
+
+  /* ── Sidebar ── */
+  --sidebar-width: 240px;
+
+  /* ── Header ── */
+  --header-height: 64px;
+
+  /* ── Risk Ring ── */
+  --risk-ring-r:             52;
+  --risk-ring-circumference: 326.73; /* 2π × 52 */
+}
+
+
+/* ── Keyframes ───────────────────────────────────────────── */
+
+/* Live pulse — cyan dot, scale 1 → 1.4 → 1, 2s infinite */
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.5;
+  }
+}
+
+/* Alert card enter — translateY(12px)→0, opacity 0→1, 0.3s ease */
+@keyframes alert-enter {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fade in */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+/* Menu toggle → X transition */
+@keyframes bar-top-open {
+  from { transform: none; }
+  to   { transform: translateY(6px) rotate(45deg); }
+}
+
+@keyframes bar-bot-open {
+  from { transform: none; }
+  to   { transform: translateY(-6px) rotate(-45deg); }
+}
+
+
+/* ── Reduced Motion ──────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ── Global Typography Utilities ─────────────────────────── */
+
+/* Label: uppercase 12px Space Grotesk 700, 0.1em tracking */
+.label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Mono text utility */
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Visually hidden (accessible) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-active);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-dim);
+}
+
+
+/* ── Focus ───────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove outline when not keyboard navigating */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* ── Selection ───────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--color-cyan-15);
+  color: var(--color-text);
+}
